@@ -1,0 +1,131 @@
+#!/bin/sh
+
+PROJECT=typing
+START_YEAR=2008
+CURRENT_YEAR=$(date +%Y)
+CURRENT_DATE=$(date "+%Y-%m-%d")
+FILES="*.html js/* css/* dev/*"
+VERSION=$(sed -n "/VERSION/ s/.*'\(.*\)'/\1/p" js/tutor.js)
+
+
+# Each substitution rule is expressed in five lines.
+#
+#   1. Comment describing what is to be substituted.
+#   2. String that must match the pattern specified below for
+#      substitution to occur. If this string does not match the pattern
+#      below it, then the substitution does not occur, i.e. the
+#      substitution rule is not run.
+#   3. Regular expression that the above string must match for
+#      substitution to occur. If the string above does not match this
+#      pattern, then the the substitution does not occur.
+#   4. Regular expression that matches what is to substituted.
+#   5. Replacement expression that substitution the string matched by
+#      the above regular expression.
+#
+# Blank lines or lines consisting only of whitespaces are ignored.
+SUBSTITUTION_RULES="
+Version in footer
+none
+none
+$PROJECT [0-9][0-9a-z.-]*<br>
+$PROJECT $VERSION<br>
+
+Copyright in comments
+none
+none
+Copyright (c) [0-9][0-9]*-[0-9][0-9]* Susam Pal
+Copyright (c) $START_YEAR-$CURRENT_YEAR Susam Pal
+
+Copyright in HTML
+none
+none
+&copy; [0-9][0-9]*-[0-9][0-9]*
+\&copy; $START_YEAR-$CURRENT_YEAR
+
+Download links
+$VERSION
+^[0-9][0-9.]*[0-9]$
+[0-9][0-9.]*[0-9]\(.*zip\|.*tar\)
+$VERSION\1
+
+Download release notes link
+$VERSION
+^[0-9][0-9.]*[0-9]$
+releases.html#[0-9][0-9.]*[0-9]
+releases.html#$VERSION
+
+Download release date
+$VERSION
+^[0-9][0-9.]*[0-9]$
+\(Release notes.*\)[1-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
+\1$CURRENT_DATE
+
+Most recent release date
+$VERSION
+^[0-9][0-9.]*[0-9]$
+\(QuickQWERTY $VERSION.*\)[1-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
+\1$CURRENT_DATE
+
+Stable update version
+$VERSION
+^[0-9][0-9.]*[0-9]$
+STABLE_VERSION = '[0-9][0-9a-z.-]*'
+STABLE_VERSION = '$VERSION'
+"
+
+
+# Start automatic substitution.
+main()
+{
+    if [ "$1" = show ]
+    then
+        printf "Showing %s %s.\n" "$PROJECT" "$VERSION"
+        show_current_data
+    else
+        printf "Updating %s %s.\n" "$PROJECT" "$VERSION"
+        run_substitution_rules
+        printf "Update complete.\n"
+    fi
+}
+
+
+# Run substitution rules specified in $SUBSTITUTION_RULES.
+run_substitution_rules()
+{
+    printf "Performing substitutions.\n"
+    printf "%s\n" "$SUBSTITUTION_RULES" | grep "[[:graph:]]" |
+    while read -r comment && read -r string && read -r matcher &&
+          read -r pattern && read -r replacement
+    do
+        if printf "%s" "$string" | grep -- "$matcher" > /dev/null
+        then
+            printf "Substituting %s.\n" "$comment"
+            sed -i "s/$pattern/$replacement/" $FILES
+        fi
+    done
+}
+
+
+# Show variable data currently used in the project.
+show_current_data()
+{
+    printf "\nShowing current data.\n"
+
+    printf "%s\n" "$SUBSTITUTION_RULES" | grep "[[:graph:]]" |
+    while read -r comment && read -r string && read -r matcher &&
+          read -r pattern && read -r replacement
+    do
+        printf "%s:\n" "$comment"
+        out=$(grep -- "$pattern" $FILES | sed 's/^/    /')
+        printf "%s\n" "$out" | while read -r line
+        do
+            filename=$(printf "%s" "$line" | cut -d: -f1)
+            dataline=$(printf "%s" "$line" | cut -d: -f2-)
+            printf "%20s: %s\n" "$filename" "$dataline"
+        done
+    done
+}
+
+
+# Start the script.
+main "$@"

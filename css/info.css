@@ -1,0 +1,90 @@
+
+
+h3 {
+    margin-top: 1.5em;
+}
+
+#content {
+    width: 62%;
+    text-align: left;
+}
+
+#sidebar {
+    width: 30%;
+    text-align: right;
+}
+
+/* Facebook */
+.fb-like-box span, .fb-like-box iframe {
+    /* The following properties need to be set in order for Facebook
+       like box to have non-zero dimensions when QuickQWERTY is accessed
+       from local storage, i.e. non-HTTP access. */
+    width: 292px !important;
+    height: 241px !important;
+}
+
+.downloadWrapper {
+    display: inline-block;
+}
+
+a.download {
+    padding: 0.75em;
+    border-width: 2px;
+    border-style: outset;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 16px;
+}
+
+a.download:last-child {
+    margin-bottom: 0;
+}
+
+a.download:link, 
+a.download:visited {
+    color: #ffffff;
+    background: #008000;
+    border-color: #008000;
+    text-decoration: none;
+}
+
+a.download:focus,
+a.download:hover,
+a.download:active {
+    color: lightcyan;
+    background: #009000;
+    border-color: #009000;
+    text-decoration: none;
+}
+
+.downloadSymbol {
+    margin-right: 0.5em;
+}
+
+.downloadNotes {
+    text-align: center;    
+}
+
+.releases {
+    list-style: none;
+}
+
+.releases li {
+    margin-bottom: 1em;
+}
+
+.type {
+    display: table-cell;
+    text-transform: uppercase;
+    width: 4em;
+}
+
+.description {
+    display: table-cell;
+}
+
+.new .type {
+    color: #008000;
+}

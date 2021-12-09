@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>mudov- typing</title>
+<meta charset="utf-8">
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/typing.css">
+<script src="js/util.js"></script>
+<script src="js/units.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/tutor.js"></script>
+<script>
+// Canonicalize URL
+;(function() {
+    var webMode = /^https?:$/i.test(window.location.protocol)
+    var comMode = /\bquickqwerty.com$/i.test(window.location.hostname)
+    var href = window.location.href
+
+    if (webMode && href.search(/\/index.html\b/i) >= 0) {
+        window.location.href = href.replace(/\/index.html/, '/')
+    }
+
+    if (comMode && href.search(/^https?:\/\/www\./i) >= 0) {
+        window.location.href = href.replace(/:\/\/www\./i, '://')
+    }
+
+})()
+
+// Start tutor, set version and check for updates
+window.onload = function()
+{
+    Tutor.init()
+
+    if (typeof Update == 'object' && typeof Update.check == 'function') {
+        Update.check()
+    }
+}
+</script>
+</head>
+<body>
+
+<!-- Header -->
+<div id="header">
+    <h1><a href="index.html">mudov- typing</a></h1>
+    <h2 id="unitTitle"></h2>
+    <!--
+        <div id="navigation">
+            <a href="index.html">Tutor</a>
+        </div>
+    -->
+</div>
+
+<!-- Main -->
+<div id="mainWrapper">
+<div id="main">
+    <div id="content">
+        <div id="unitLinks"></div>
+
+        <div id="practicePanelWrapper">
+        <div id="practicePanel">
+            <div id="previousLink">
+                <a href="#previous">&laquo;</a>
+            </div>
+
+            <div id="practicePane">
+
+                <div id="subunitLinks">
+                    <div class="stretch"></div>
+                </div> <!-- End subunitLinks -->
+
+                <div id="target"></div>
+
+                <div id="feedbackPane">
+                    <div id="statusPane">
+                        <div id="status"></div>
+                        <div id="remark"></div>
+                        <div id="advice"></div>
+                    </div>
+                    <div id="progressPane">
+                        <div id="progress">
+                            <progress id="progressBar" value="0" max="100">
+                            </progress>
+                            <div>
+                                <span id="progressPercent"></span>
+                            </div>
+                        </div>
+                        <div id="restartLink">
+                            <a href="#restart" title="Start over">Restart</a>
+                        </div>
+                    </div>
+                    <div id="resultPane">
+                        <div id="speed"></div>
+                        <div id="error"></div>
+                        <div id="smiley"></div>
+                    </div>
+                </div> <!-- End feedbackPane -->
+
+                <div id="inputPane">
+                    <textarea id="input" rows="5" autocomplete="off"
+                              spellcheck="false"></textarea>
+                </div> <!-- End inputPane -->
+
+                <div id="alternateUnitLinks">
+                </div>
+
+            </div> <!-- End practicePane -->
+
+            <div id="nextLink">
+                <a href="#next">&raquo;</a>
+            </div>
+        </div> <!-- End practicePanel -->
+
+        <div id="guidePane">
+            <div>
+                <a id="guideLink" href="#"></a>
+            </div>
+            <div id="guide"></div>
+        </div> <!-- End guidePane -->
+        </div> <!-- End practicePanelWrapper -->
+
+        <noscript>
+        <div id="noscriptWrapper">
+            <div id="noscript">
+            JavaScript should be enabled to run this application.
+            </div>
+        </div>
+        </noscript>
+
+    </div> <!-- End content -->
+
+</div> <!-- End main -->
+</div> <!-- End mainWrapper -->
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</body>
+</html>
